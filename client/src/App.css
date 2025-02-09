@@ -1,0 +1,245 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff3cac;
+  background-image: linear-gradient(
+      225deg,
+      #ff3cac 0%,
+      #784ba0 50%,
+      #2b86c5 100%
+  );
+  height: 100vh;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 300px;
+  width: 90%;
+  max-width: 600px;
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 50px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 50px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+  text-align: center;
+  color: #051b4b;
+  &:hover {
+      cursor: default;
+  }
+}
+
+.input-container {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.input-container input {
+  width: 100%;
+  border: none;
+  background-color: #eef0f5;
+  color: #000000; 
+  padding-left: 15px;
+  border-radius: 100px;
+  &:hover,
+  &:focus {
+      outline: none;
+  }
+}
+
+
+
+.input-container button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  height: 100%;
+  width: 75px;
+  border-radius: 100px;
+  border: none;
+  background-color: #fc5845;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+      background-color: rgba(252, 88, 69, 0.8);
+  }
+}
+
+#task-list {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.task-item {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.text {
+  margin-right: 10px;
+  margin-left: 50px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #051b4b;
+  &:hover {
+      cursor: pointer;
+  }
+  .task-item.active & {
+      text-decoration: line-through;
+  }
+}
+
+.task-item .btn-check {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  padding: 10px;
+  border-radius: 100px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #000;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+  }
+  .task-item.active & {
+      color: #fff;
+      background-color: rgba(252, 88, 69, 0.8);
+  }
+}
+
+.task-item .btn-close {
+  height: 40px;
+  width: 10px;
+  border: none;
+  background-color:  rgba(255, 255, 255, 0.5); 
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centers the icon */
+  font-size: 16px; /* Adjust size if needed */
+  &:hover {
+      color: #fff;
+      background-color: rgba(252, 88, 69, 0.8);
+  }
+}
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Adjust the gap between elements */
+  align-items: center;
+}
+
+.auth-container input {
+  width: 100%;
+  height: 50px;
+  font-size: 24px;
+  border: none;
+  background-color: #eef0f5;
+  color: #000000; 
+  padding-left: 15px;
+  border-radius: 100px;
+  &:hover,
+  &:focus {
+      outline: none;
+  }
+}
+
+.auth-container button{
+  height: 90%;
+  width: 100px;
+  border-radius: 100px;
+  border: none;
+  background-color: #fc5845;
+  color: #fff;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+      background-color: rgba(252, 88, 69, 0.8);
+  }
+}
+
+.logout-btn{
+  height: 90%;
+  width: 100px;
+  border-radius: 100px;
+  border: none;
+  background-color: #d69cdd;
+  color: #fff;
+  margin-bottom: 10px;
+  transition: all 0.3s ease-in-out;
+  &:hover {
+      background-color: #d478df;
+  }
+}
