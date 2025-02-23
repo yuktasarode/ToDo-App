@@ -4,7 +4,7 @@ const router = express.Router();
 const AuthorizationController = require("./controllers/AuthorizationController.js");
 router.post(
   "/signup",
-  AuthorizationController.register
+  AuthorizationController.signup
 );
 router.post(
   "/login",

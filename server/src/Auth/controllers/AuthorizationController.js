@@ -25,7 +25,7 @@ const encryptPassword = (password) => {
 };
 
 module.exports = {
-  register: async (req, res) => {
+  signup: async (req, res) => {
     try {
       const { email, password, username } = req.body; // Extract properties correctly
 
@@ -84,12 +84,18 @@ module.exports = {
       }
 
       const accessToken = generateAccessToken(user.username, user.id);
+      res.cookie("token", accessToken, {
+        httpOnly: true,  // Prevents access from JavaScript
+        secure: true,    // Only send over HTTPS (enable this in production)
+        sameSite: "Strict", // Helps prevent CSRF attacks
+        maxAge: jwtExpirationInSeconds * 1000, // Expiry time in milliseconds
+      });
 
       return res.status(200).json({
         status: true,
         data: {
           user,
-          token: accessToken,
+          message: "Login successful",
         },
       });
     } catch (error) {

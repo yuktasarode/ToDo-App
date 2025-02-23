@@ -1,18 +1,20 @@
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
+const authMiddleware = require('../Middleware/authMiddleware'); 
+
 const prisma = new PrismaClient();
 const router = express.Router();
 
 
 
 // Get User's tasks
-router.post('/getUser', async (req, res) => {
+router.post('/getUser', authMiddleware, async (req, res) => {
     const { email } = req.body;
     try {
-      const user = await prisma.user.findMany({
+      const user = await prisma.user.findUnique({ 
         where: { email }
     });
-        if (user.length > 0) 
+        if (user) 
         {
         res.status(201).json(user);
         } else {
@@ -20,7 +22,7 @@ router.post('/getUser', async (req, res) => {
 
       
     } catch (error) {
-      res.status(500).json({ error: 'Error in fincing user' });
+      res.status(500).json({ error: 'Error in finding user' });
     }
   });
 
