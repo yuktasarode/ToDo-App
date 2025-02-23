@@ -38,6 +38,7 @@ function App() {
   const handleLogin = async () => {
     try {
      console.log("Login success")
+     setIsAuthenticated(false)
     } catch (err) {
       console.error("Login failed", err);
     }
