@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { fetchTasks, addTask, removeTask as removeTaskAPI, toggleTaskCompletion as toggleTaskAPI } from "./api/api";
+
 
 interface Task {
   id: string; // Update type to string since backend likely uses UUIDs
@@ -11,7 +12,6 @@ interface TodoListProps {
   handleLogout: () => void;
 }
 
-const API_BASE_URL = "http://localhost:3000/task";
 
 const TodoList = ({ handleLogout }: TodoListProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -19,32 +19,24 @@ const TodoList = ({ handleLogout }: TodoListProps) => {
 
   // 🔹 Fetch tasks from backend
   useEffect(() => {
-    const fetchTasks = async () => {
+    const getTasks = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/tasks`, {
-          withCredentials: true, // Important for sending cookies (auth)
-        });
-        console.log(response)
-        setTasks(response.data);
+        const tasks = await fetchTasks();
+        setTasks(tasks);
       } catch (error) {
         console.error("Error fetching tasks:", error);
       }
     };
-    fetchTasks();
+    getTasks();
   }, []);
 
   // 🔹 Add a task to the backend
   const addToList = async () => {
     if (inputValue.trim() === "") return;
-    
-    try {
-      const response = await axios.post(
-        `${API_BASE_URL}/addTask`,
-        { text: inputValue, completed: false },
-        { withCredentials: true }
-      );
 
-      setTasks([...tasks, response.data]); // Append new task from backend
+    try {
+      const newTask = await addTask(inputValue);
+      setTasks([...tasks, newTask]); 
       setInputValue("");
     } catch (error) {
       console.error("Error adding task:", error);
@@ -54,10 +46,7 @@ const TodoList = ({ handleLogout }: TodoListProps) => {
   // 🔹 Delete a task from the backend
   const removeTask = async (id: string) => {
     try {
-      await axios.delete(`${API_BASE_URL}/deleteTask/${id}`, {
-        withCredentials: true,
-      });
-
+      await removeTaskAPI(id);
       setTasks(tasks.filter((task) => task.id !== id));
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -67,16 +56,8 @@ const TodoList = ({ handleLogout }: TodoListProps) => {
   // 🔹 Toggle task completion (frontend only, backend update needed if required)
   const toggleTaskCompletion = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/task/toggleTaskCompletion/${id}`, {
-        method: "PATCH",
-        credentials: "include",
-      });
+      const updatedTask = await toggleTaskAPI(id); // Call the actual API function
   
-      if (!response.ok) {
-        throw new Error("Failed to update task completion");
-      }
-  
-      const updatedTask = await response.json();
       setTasks(
         tasks.map((task) =>
           String(task.id) === String(id) ? { ...task, completed: updatedTask.completed } : task

@@ -3,29 +3,19 @@ import "./App.css";
 import Login from "./Login";
 import Signup from "./Signup";
 import TodoList from "./TodoList";
+import { checkAuth, logout } from "./api/api";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [showSignup, setShowSignup] = useState<boolean>(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/auth/checkAuth", {
-          method: "GET",
-          credentials: "include", // Ensures cookies are sent
-        });
-
-        const data = await response.json();
-        if (data.isAuthenticated) {
-          setIsAuthenticated(true);
-        }
-      } catch (error) {
-        console.error("Auth check failed:", error);
-      }
+    const fetchAuthStatus = async () => {
+      const data = await checkAuth();
+      setIsAuthenticated(data.isAuthenticated);
     };
 
-    checkAuth();
+    fetchAuthStatus();
   }, []);
 
   const handleLoginSuccess = () => {
@@ -33,11 +23,7 @@ function App() {
   };
 
   const handleLogout = async () => {
-    await fetch("http://localhost:3000/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
-
+    await logout();
     setIsAuthenticated(false);
   };
 
