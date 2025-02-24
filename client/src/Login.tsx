@@ -23,16 +23,14 @@ interface LoginProps {
   
     return (
       <div className="auth-container">
-      <div>
-        <h2>Login</h2>
+        <h2 style={{ color: "black" }}>Login</h2>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
           <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button type="submit">Login</button>
         </form>
-        <p>Don't have an account? <button onClick={() => setShowSignup(true)}>Sign up</button></p>
-      </div>
+        <p style={{ color: "black" }}>Don't have an account? <button className="signup" onClick={() => setShowSignup(true)}>Sign up</button></p>
       </div>
       
     );
