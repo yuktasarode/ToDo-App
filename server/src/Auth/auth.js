@@ -16,4 +16,13 @@ router.get(
   AuthorizationController.home
 );
 
+router.get("/checkAuth",
+  AuthorizationController.checkAuth
+);
+
+router.post("/logout", 
+  AuthorizationController.logout
+);
+
+
   module.exports = router;

@@ -78,4 +78,38 @@ router.delete('/deleteTask/:taskId', authMiddleware, async (req, res) => {
   }
 });
 
+// Update Task Completion Status
+router.patch('/toggleTaskCompletion/:taskId', authMiddleware, async (req, res) => {
+  const userId = req.user?.id;
+  const { taskId } = req.params;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized: No user ID found" });
+  }
+
+  try {
+    // Find the task
+    const task = await prisma.task.findUnique({ where: { id: taskId } });
+
+    if (!task) {
+      return res.status(404).json({ error: 'Task not found' });
+    }
+
+    if (task.userId !== userId) {
+      return res.status(403).json({ error: "Unauthorized: You can only update your own tasks" });
+    }
+
+    // Toggle completion status
+    const updatedTask = await prisma.task.update({
+      where: { id: taskId },
+      data: { completed: !task.completed },
+    });
+
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    res.status(500).json({ error: 'Error updating task completion status' });
+  }
+});
+
+
 module.exports = router;

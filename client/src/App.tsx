@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Login from "./Login";
 import Signup from "./Signup";
@@ -8,25 +8,36 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [showSignup, setShowSignup] = useState<boolean>(false);
 
-  const handleSignup = async () => {
-    try {
-      console.log("Signup success");
-    } catch (err) {
-      console.error("Signup failed", err);
-    }
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/auth/checkAuth", {
+          method: "GET",
+          credentials: "include", // Ensures cookies are sent
+        });
+
+        const data = await response.json();
+        if (data.isAuthenticated) {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  const handleLoginSuccess = () => {
+    setIsAuthenticated(true);
   };
 
-  const handleLogin = async () => {
-    try {
-      console.log("Login success");
-      setIsAuthenticated(true);
-    } catch (err) {
-      console.error("Login failed", err);
-    }
-  };
+  const handleLogout = async () => {
+    await fetch("http://localhost:3000/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
 
-  const handleLogout = () => {
-    console.log("Logout success");
     setIsAuthenticated(false);
   };
 
@@ -35,9 +46,9 @@ function App() {
       <h1 className="header">To-do List</h1>
       {!isAuthenticated ? (
         showSignup ? (
-          <Signup handleSignup={handleSignup} setShowSignup={setShowSignup} />
+          <Signup setShowSignup={setShowSignup} />
         ) : (
-          <Login handleLogin={handleLogin} setShowSignup={setShowSignup} />
+          <Login handleLoginSuccess={handleLoginSuccess} setShowSignup={setShowSignup} />
         )
       ) : (
         <TodoList handleLogout={handleLogout} />
