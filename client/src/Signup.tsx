@@ -25,7 +25,7 @@ const Signup = ({ setShowSignup }: SignupProps) => {
   return (
     <div className="auth-container">
     <div>
-      <h2>Signup</h2>
+      <h2 style={{ color: "black" }}>Signup</h2>
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -33,7 +33,7 @@ const Signup = ({ setShowSignup }: SignupProps) => {
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Sign up</button>
       </form>
-      <p>Already have an account? <button onClick={() => setShowSignup(false)}>Login</button></p>
+      <p style={{ color: "black" }}>Already have an account? <button className="signup" onClick={() => setShowSignup(false)}>Login</button></p>
     </div>
     </div>
   );
