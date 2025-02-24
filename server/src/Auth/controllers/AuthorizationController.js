@@ -106,6 +106,28 @@ module.exports = {
     }
   },
 
+  checkAuth: async (req,res) => {
+    const token = req.cookies?.token;
+  if (!token) {
+    return res.status(401).json({ isAuthenticated: false, error: "No token found" });
+  }
+  jwt.verify(token, jwtSecret, (err, decoded) => {
+    if (err) {
+      return res.status(401).json({ isAuthenticated: false, error: "Invalid token" });
+    }
+    return res.status(200).json({ isAuthenticated: true, user: decoded });
+  });
+
+  },
+  logout: async (req,res) => {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: true, // Ensure it's only sent over HTTPS in production
+      sameSite: "Strict",
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+  },
+
   home: async (req, res) => {
     try {
         return res.status(200).json({
